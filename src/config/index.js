@@ -17,7 +17,7 @@ const config = {
     IP: process.env.IP || '0.0.0.0',
     LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
     NODE_ENV: process.env.NODE_ENV || 'development',
-    PORT: process.env.PORT || 9000,
+    PORT: process.env.PORT || 4500,
     ROOT: path.join(__dirname, '..'),
   },
   test: {
