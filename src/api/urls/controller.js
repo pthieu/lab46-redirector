@@ -1,13 +1,23 @@
 const isUrl = require('is-url');
 
+const Event = require('../events/model');
 const Url = require('./model');
+const { EVENT_KEYS } = require('../../constants');
 const { error, redirect: redirectRes, success } = require('../responses');
 
 const redirectLanding = async (req, res) => {
+  const { headers } = req;
+  Event.track({
+    key: EVENT_KEYS.REDIRECT_HOME,
+    data: {
+      headers,
+    },
+  });
   return redirectRes(res, 'https://www.labfortysix.com');
 };
 
 const redirect = async (req, res) => {
+  const { headers } = req;
   const { key } = req.params;
   const data = await Url.query().findOne({ key });
   if (!data) {
@@ -15,6 +25,16 @@ const redirect = async (req, res) => {
   }
 
   const { url } = data;
+
+  Event.track({
+    key: EVENT_KEYS.REDIRECT,
+    data: {
+      key,
+      url,
+      headers,
+    },
+  });
+
   return redirectRes(res, url);
 };
 
