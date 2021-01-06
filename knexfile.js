@@ -18,5 +18,4 @@ module.exports = {
   seeds: {
     directory: __dirname + '/src/db/seeds',
   },
-  useNullAsDefault: config.DB_CLIENT === 'sqlite3',
 };

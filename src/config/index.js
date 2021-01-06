@@ -20,10 +20,7 @@ const config = {
     PORT: process.env.PORT || 4500,
     ROOT: path.join(__dirname, '..'),
   },
-  test: {
-    DB_CLIENT: 'sqlite3',
-    DB_CONNECTION: ':memory:',
-  },
+  test: {},
 };
 
 module.exports = Object.assign(config.all, config[config.all.NODE_ENV]);
