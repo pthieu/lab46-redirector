@@ -1,3 +1,4 @@
+import { InferModel } from 'drizzle-orm';
 import {
   index,
   jsonb,
@@ -8,7 +9,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
-export const urls = pgTable(
+export const UrlTable = pgTable(
   'urls',
   {
     id: serial('id').primaryKey().notNull(),
@@ -28,7 +29,7 @@ export const urls = pgTable(
   },
 );
 
-export const events = pgTable('events', {
+export const EventTable = pgTable('events', {
   id: serial('id').primaryKey().notNull(),
   key: varchar('key', { length: 255 }).notNull(),
   data: jsonb('data'),
@@ -39,3 +40,9 @@ export const events = pgTable('events', {
     .defaultNow()
     .notNull(),
 });
+
+export type Url = InferModel<typeof UrlTable>;
+export type NewUrl = InferModel<typeof UrlTable, 'insert'>;
+
+export type Event = InferModel<typeof EventTable>;
+export type NewEvent = InferModel<typeof EventTable, 'insert'>;

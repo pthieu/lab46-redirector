@@ -22,10 +22,9 @@ export default function app(routes: Router) {
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
 
-  app.get('/', (_, res) => res.sendStatus(404));
   app.get('/favicon.ico', (_, res) => res.sendStatus(204));
 
-  app.use('', routes);
+  app.use('/', routes);
 
   return app;
 }

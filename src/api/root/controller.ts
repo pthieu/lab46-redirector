@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import packageJson from '../../../package.json';
 
-export const getServerInfo = async (_req: Request, res: Response) => {
+export const serverInfo = async (_req: Request, res: Response) => {
   const data = {
     version: packageJson.version,
   };
@@ -14,6 +14,6 @@ export const ping = (_req: Request, res: Response) => {
 };
 
 export default {
-  getServerInfo,
+  serverInfo,
   ping,
 };
