@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1685505049898,
+      "tag": "0000_tranquil_lily_hollister",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1685505895719,
+      "tag": "0001_spotty_sabra",
+      "breakpoints": false
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+variables:
+  - &build-image cimg/node:20.2.0
+  - &workspace /home/circleci/project
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build_workspace:
+          filters:
+            branches:
+              only:
+                - main
+      - lint_and_compile:
+          requires:
+            - build_workspace
+      # - build:
+      #     requires:
+      #       - lint_and_compile
+      # - wait_for_approval:
+      #     type: approval
+      #     requires:
+      #       - lint_and_compile
+
+jobs:
+  build_workspace:
+    docker:
+      - image: *build-image
+    steps:
+      - checkout
+      - run:
+          name: Install pnpm
+          command: sudo npm install -g pnpm
+      - restore_cache:
+          name: Restore pnpm Package Cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Install Dependencies
+          command: pnpm install
+      - save_cache:
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: *workspace
+          paths:
+            - .
+  lint_and_compile:
+    docker:
+      - image: *build-image
+    steps:
+      - attach_workspace:
+          at: *workspace
+      - run:
+          name: Lint
+          command: pnpm run lint
+      - run:
+          name: Compile
+          command: pnpm run build
+      - persist_to_workspace:
+          root: *workspace
+          paths:
+            - .
+  # build:
+  #   docker:
+  #     - image: &build-image
+  #   steps:
+  #     - checkout
+  #     - run: node --version
