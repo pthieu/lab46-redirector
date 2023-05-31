@@ -1,28 +1,7 @@
-# Phong's Boilerplate for Backend Apps
+# LAB46 URL Shortener
 
 # TODO
-- [ ] Figure out way to build and push image as a demo (say to ECR)
-- [ ] Add a logger lib to add timestamps
-- [ ] Add pagination example
-- [ ] Add login with google example and middleware for role auth
-- [ ] Figure out error logs in production, with build and minification, hard to see which line it broke on
-- [ ] Look into what to put into `.dockerignore`
-- [ ] Middleware to print incoming requests?
-- [ ] Look into auth middleware, how to show as an example
-- [ ] Add testing framework and unit test
-- [ ] Set up package version bump bot
-- [x] Get vite-node HMR to work
-  - [ ] Improve speed of HMR for nested files (i.e. controller.ts takes 5s without getting a request, cache issue? polling interval?)
-- [x] Move to Drizzle ORM
-  - [ ] copy all migrations and metadata over on build
-- [x] Add build script
-- [x] Add Dockerfile
-  - [x] Try to reduce Docker image size
-- [x] Add CircleCI config
-- [x] Add db query builder or ORM + 1 migration + DB config and singleton
-- [x] Figure out how to handle migrations:up and :down
-- [x] Figure out how to run migration in production
-- [x] Add database connection in migrations
+- [ ] Add tests
 
 # Stack
 - TypeScript

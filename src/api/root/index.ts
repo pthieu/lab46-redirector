@@ -5,6 +5,6 @@ import Controller from './controller';
 const router = Router();
 
 router.get('/ping', Controller.ping);
-router.get('/serverinfo', Controller.getServerInfo);
+router.get('/serverinfo', Controller.serverInfo);
 
 export default router;

@@ -9,13 +9,13 @@ variables:
 
 workflows:
   version: 2
-  main:
+  master:
     jobs:
       - build_workspace:
           filters:
             branches:
               only:
-                - main
+                - master
       - lint_and_compile:
           requires:
             - build_workspace
