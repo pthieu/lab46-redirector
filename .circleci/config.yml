@@ -13,6 +13,11 @@ parameters:
     default: "${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:8}"
     description: |
       The version tag to apply to the image.
+  architecture:
+    type: string
+    default: "linux/aarch64"
+    description: |
+      The architecture to build the image for.
 
 workflows:
   master:
@@ -25,16 +30,16 @@ workflows:
       - lint_and_compile:
           requires:
             - build_workspace
-      - wait_for_approval:
-          type: approval
-          requires:
-            - lint_and_compile
+      # - wait_for_approval:
+      #     type: approval
+      #     requires:
+      #       - lint_and_compile
       - build_and_push:
           context:
             - global
           repo: lab46-redirector
           requires:
-            - wait_for_approval
+            - lint_and_compile
 
 jobs:
   build_workspace:
@@ -78,6 +83,9 @@ jobs:
           paths:
             - .
   build_and_push:
+    resource_class: arm.medium
+    machine:
+      image: ubuntu-2004:current
     executor: aws-ecr/default
     parameters:
       repo:
@@ -92,6 +100,7 @@ jobs:
           The AWS region to push the image to.
     steps:
       - aws-ecr/build-and-push-image:
+          platform: << pipeline.parameters.architecture >>
           registry-id: AWS_ACCOUNT_ID
           region: us-west-2
           repo: << parameters.repo >>

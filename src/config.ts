@@ -12,10 +12,11 @@ export interface Config {
 
 const PROJECT_NAME = 'lab46-redirector';
 const ENVIRONMENT = process.env.ENVIRONMENT || 'development';
+const AWS_REGION = process.env.AWS_REGION || 'us-west-2';
 
 // XXX(Phong): Write this to whatever provider you want to use
 async function getCloudSecrets() {
-  const client = new SSMClient({});
+  const client = new SSMClient({ region: AWS_REGION });
   const input: GetParametersByPathCommandInput = {
     // XXX(Phong): this name needs to be created
     Path: `/${PROJECT_NAME}/env/${ENVIRONMENT}`,
