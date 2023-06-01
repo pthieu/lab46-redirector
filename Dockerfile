@@ -31,7 +31,7 @@ COPY package.json ./
 COPY --from=builder /app/dist/app.js ./
 COPY --from=builder /app/dist/migrations ./migrations
 
-ENV NODE_ENV production
+ENV ENVIRONMENT production
 ENV PORT 80
 
 EXPOSE 80
