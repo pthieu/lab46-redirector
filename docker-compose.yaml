@@ -1,12 +1,13 @@
 version: '3.6'
-name: ts-api
+name: lab46-redirector
 services:
   service:
-    image: ts-api
-    container_name: ts-api
+    build: .
+    image: lab46-redirector
+    container_name: lab46-redirector
     restart: always
     ports:
-      - 9000:80
+      - 4500:80
     env_file:
       - .env
     environment:
