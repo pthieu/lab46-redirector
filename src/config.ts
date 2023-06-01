@@ -6,8 +6,11 @@ import {
 } from '@aws-sdk/client-ssm';
 
 export interface Config {
+  readonly ENVIRONMENT: string;
+  readonly PROJECT_NAME: string;
   readonly PORT: number;
-  readonly DATABASE_URL: string | undefined;
+  readonly DATABASE_URL: string;
+  readonly AWS_REGION: string;
 }
 
 const PROJECT_NAME = 'lab46-redirector';
@@ -30,28 +33,40 @@ async function getCloudSecrets() {
     response.Parameters?.map((p) => [p.Name?.split('/').pop(), p?.Value]) || [],
   );
 
-  return secrets satisfies Partial<Config> as Config;
+  return secrets satisfies Config as Config;
 }
 
-let cloudSecrets: Partial<Config> = {};
+// XXX(Phong): must inject  before the config gets frozen or erros will throw
 if (process.env.ENVIRONMENT === 'production') {
-  cloudSecrets = await getCloudSecrets();
+  const cloudSecrets = await getCloudSecrets();
+  Object.entries(cloudSecrets).forEach(([key, value]) => {
+    process.env[key] = value;
+  });
 }
 
 const config: Config = Object.freeze({
   ENVIRONMENT,
   PROJECT_NAME,
-  PORT: parseInt(getEnvVariable('PORT') || '9000', 10),
+  PORT: parseInt(getEnvVariable<number>('PORT', 9000) as string, 10),
   DATABASE_URL: getEnvVariable('DATABASE_URL'),
-  ...cloudSecrets,
+  AWS_REGION,
 });
 
-function getEnvVariable(name: string): string | undefined {
+function getEnvVariable<T = string>(
+  name: string,
+  defaultValue?: T,
+): string | T {
   const val = process.env[name];
-  if (!val) {
-    console.error(`Missing environment variable: ${name}`);
+
+  if (val) {
+    return val;
   }
-  return val;
+
+  if (defaultValue) {
+    return defaultValue;
+  }
+
+  throw new Error(`Missing environment variable: ${name}`);
 }
 
 export default config;
