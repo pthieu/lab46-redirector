@@ -7,7 +7,7 @@ import {
 
 export interface Config {
   readonly PORT: number;
-  readonly DATABASE_URL: string;
+  readonly DATABASE_URL: string | undefined;
 }
 
 const PROJECT_NAME = 'lab46-redirector';
@@ -41,21 +41,16 @@ if (process.env.ENVIRONMENT === 'production') {
 const config: Config = Object.freeze({
   ENVIRONMENT,
   PROJECT_NAME,
-  PORT: parseInt(getEnvVariable('PORT', '9000'), 10),
+  PORT: parseInt(getEnvVariable('PORT') || '9000', 10),
   DATABASE_URL: getEnvVariable('DATABASE_URL'),
   ...cloudSecrets,
 });
 
-function getEnvVariable(name: string, defaultVal?: string): string {
+function getEnvVariable(name: string): string | undefined {
   const val = process.env[name];
-
   if (!val) {
-    if (defaultVal) {
-      return defaultVal;
-    }
-    throw new Error(`environment variable ${name} not found`);
+    console.error(`Missing environment variable: ${name}`);
   }
-
   return val;
 }
 
