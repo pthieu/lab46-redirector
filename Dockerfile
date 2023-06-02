@@ -1,5 +1,4 @@
 FROM node:20-alpine AS base
-# FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -32,7 +31,6 @@ COPY package.json ./
 COPY --from=builder /app/dist/app.js ./
 COPY --from=builder /app/dist/migrations ./migrations
 
-ENV ENVIRONMENT production
 ENV PORT 80
 
 EXPOSE 80
